@@ -59,6 +59,26 @@ class LessThanOrEqualOperator implements QueryOperator {
   }
 }
 
+class StartsWithOperator implements QueryOperator {
+  passes(value: any, test: any): boolean {
+    if (typeof value != 'string' || typeof test != 'string') {
+      return false;
+    }
+
+    return value.startsWith(test);
+  }
+}
+
+class EndsWithOperator implements QueryOperator {
+  passes(value: any, test: any): boolean {
+    if (typeof value != 'string' || typeof test != 'string') {
+      return false;
+    }
+
+    return value.endsWith(test);
+  }
+}
+
 export {
   QueryOperator,
   QueryOperatorFactory,
@@ -68,4 +88,6 @@ export {
   GreaterThanOrEqualOperator,
   LessThanOperator,
   LessThanOrEqualOperator,
+  StartsWithOperator,
+  EndsWithOperator,
 };

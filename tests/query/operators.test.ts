@@ -1,9 +1,11 @@
 import {
+  EndsWithOperator,
   EqualOperator,
   GreaterThanOperator,
   LessThanOperator,
   LessThanOrEqualOperator,
   NotEqualOperator,
+  StartsWithOperator,
 } from '../../src/query/query-operators';
 
 describe('Operator tests', () => {
@@ -52,5 +54,23 @@ describe('Operator tests', () => {
     let operator = new LessThanOrEqualOperator();
     expect(operator.passes(10, 24)).toEqual(true);
     expect(operator.passes(10, 10)).toEqual(true);
+  });
+
+  test('Starts with', () => {
+    let operator = new StartsWithOperator();
+    expect(operator.passes('This should work', 'This')).toEqual(true);
+    expect(operator.passes('This should fail', 'Nope')).toEqual(false);
+    expect(operator.passes('This should fail', 42)).toEqual(false);
+    expect(operator.passes(13, 'Wrong type')).toEqual(false);
+    expect(operator.passes(13, false)).toEqual(false);
+  });
+
+  test('Ends with', () => {
+    let operator = new EndsWithOperator();
+    expect(operator.passes('This should work', 'work')).toEqual(true);
+    expect(operator.passes('This will fail', 'Nope')).toEqual(false);
+    expect(operator.passes('This should fail', 42)).toEqual(false);
+    expect(operator.passes(13, 'Wrong type')).toEqual(false);
+    expect(operator.passes(13, false)).toEqual(false);
   });
 });
