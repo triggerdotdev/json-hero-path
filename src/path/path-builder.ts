@@ -1,4 +1,6 @@
-import { PathComponent, SimpleKeyPathComponent } from './path-components';
+import { PathComponent } from './path-components';
+import { SimpleKeyPathComponent } from './simple-key-path-component';
+import { WildcardPathComponent } from './wildcard-path-component';
 
 class PathBuilder {
   private static readonly delimiter: RegExp = /(?<!\\)\./g;
@@ -10,8 +12,16 @@ class PathBuilder {
 
     for (let i = 0; i < subPaths.length; i++) {
       let subPath = subPaths[i];
-      let component = SimpleKeyPathComponent.fromString(subPath);
-      components.push(component);
+
+      //wildcard
+      let wildcardComponent = WildcardPathComponent.fromString(subPath);
+      if (wildcardComponent != null) {
+        components.push(wildcardComponent);
+        continue;
+      }
+
+      //simple
+      components.push(SimpleKeyPathComponent.fromString(subPath));
     }
 
     return components;
