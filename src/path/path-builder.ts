@@ -1,4 +1,4 @@
-import { PathComponent } from './path-components';
+import { PathComponent } from './path-component';
 import { SimpleKeyPathComponent } from './simple-key-path-component';
 import { WildcardPathComponent } from './wildcard-path-component';
 

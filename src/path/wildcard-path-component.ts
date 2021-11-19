@@ -1,4 +1,4 @@
-import { PathComponent } from './path-components';
+import { PathComponent } from './path-component';
 
 class WildcardPathComponent implements PathComponent {
   static fromString(string: string): WildcardPathComponent | null {

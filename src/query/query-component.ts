@@ -1,4 +1,4 @@
-import { PathComponent } from '../path/path-components';
+import { PathComponent } from '../path/path-component';
 
 interface QueryComponent {
   readonly path: PathComponent;

@@ -1,4 +1,4 @@
-import { PathComponent } from './path-components';
+import { PathComponent } from './path-component';
 
 class SimpleKeyPathComponent implements PathComponent {
   readonly keyName: string;
