@@ -4,7 +4,7 @@ class QueryComponent {
   readonly path: PathComponent;
   readonly filters: QueryFilter[] | null;
 
-  constructor(path: PathComponent, filters: QueryFilter[]) {
+  constructor(path: PathComponent, filters: QueryFilter[] | null) {
     this.path = path;
     this.filters = filters;
   }
