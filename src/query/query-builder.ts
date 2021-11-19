@@ -1,7 +1,8 @@
 import { QueryComponent, QueryFilter } from './query-component';
-import { PathComponent } from '../path/path-component';
 import OperatorFilter from './operator-filter';
 import PathBuilder from '../path/path-builder';
+import SubPathOperatorFilter from './sub-path-operator-filter';
+import { JSONHeroPath } from '../index';
 
 class QueryBuilder {
   parse(object: any): QueryComponent[] {
@@ -24,6 +25,12 @@ class QueryBuilder {
             case 'operator':
               return new OperatorFilter(
                 data['key'] as string | null,
+                data['operatorType'] as string,
+                data['value'] as any,
+              );
+            case 'subPath':
+              return new SubPathOperatorFilter(
+                JSONHeroPath.fromString(data['path'] as string),
                 data['operatorType'] as string,
                 data['value'] as any,
               );
