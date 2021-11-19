@@ -1,6 +1,6 @@
 import { QueryComponent, QueryFilter } from './query-component';
 import { PathComponent } from '../path/path-component';
-import ChildKeyFilter from './child-key-filter';
+import OperatorFilter from './operator-filter';
 import PathBuilder from '../path/path-builder';
 
 class QueryBuilder {
@@ -22,7 +22,7 @@ class QueryBuilder {
           let filterType = data['type'];
           switch (filterType) {
             case 'operator':
-              return new ChildKeyFilter(
+              return new OperatorFilter(
                 data['key'] as string | null,
                 data['operatorType'] as string,
                 data['value'] as any,

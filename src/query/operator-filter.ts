@@ -1,8 +1,8 @@
 import { QueryFilter } from './query-component';
 import { QueryOperator, QueryOperatorFactory } from './query-operators';
 
-class ChildKeyFilter implements QueryFilter {
-  readonly type: string = 'childKey';
+class OperatorFilter implements QueryFilter {
+  readonly type: string = 'operator';
   readonly key: string | null;
   readonly operator: QueryOperator;
   readonly value: any;
@@ -44,4 +44,4 @@ class ChildKeyFilter implements QueryFilter {
   }
 }
 
-export default ChildKeyFilter;
+export default OperatorFilter;
