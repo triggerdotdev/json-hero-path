@@ -1,0 +1,20 @@
+{
+  "name": "json-hero",
+  "version": "1.0.0",
+  "description": "An easy way to query and filter JSON objects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://matt-aitken@github.com/TinyMatter/json-hero.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TinyMatter/json-hero/issues"
+  },
+  "homepage": "https://github.com/TinyMatter/json-hero#readme"
+}
