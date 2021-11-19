@@ -12,19 +12,19 @@ class PathBuilder {
 
     for (let i = 0; i < subPaths.length; i++) {
       let subPath = subPaths[i];
-
-      //wildcard
-      let wildcardComponent = WildcardPathComponent.fromString(subPath);
-      if (wildcardComponent != null) {
-        components.push(wildcardComponent);
-        continue;
-      }
-
-      //simple
-      components.push(SimpleKeyPathComponent.fromString(subPath));
+      components.push(this.parseComponent(subPath));
     }
 
     return components;
+  }
+
+  parseComponent(string: string): PathComponent {
+    let wildcardComponent = WildcardPathComponent.fromString(string);
+    if (wildcardComponent != null) {
+      return wildcardComponent;
+    }
+
+    return SimpleKeyPathComponent.fromString(string);
   }
 }
 

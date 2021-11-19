@@ -1,5 +1,7 @@
 import { PathComponent } from './path/path-component';
 import PathBuilder from './path/path-builder';
+import { QueryComponent } from './query/query-component';
+import QueryBuilder from './query/query-builder';
 
 class JSONHeroPath {
   readonly components: PathComponent[];
@@ -44,6 +46,43 @@ class JSONHeroPath {
   }
 }
 
-class JSONHeroQuery {}
+class JSONHeroQuery {
+  readonly components: QueryComponent[];
 
-export { JSONHeroPath };
+  constructor(components: QueryComponent[]) {
+    this.components = components;
+  }
+
+  static fromObject(object: any): JSONHeroQuery {
+    let queryBuilder = new QueryBuilder();
+    let components = queryBuilder.parse(object);
+    return new JSONHeroQuery(components);
+  }
+
+  first(object: any): any {
+    let results = this.all(object);
+    if (results === null || results.length === 0) {
+      return null;
+    }
+
+    return results[0];
+  }
+
+  all(object: any): any[] {
+    let results: any[] = [];
+    results.push(object);
+
+    for (let i = 0; i < this.components.length; i++) {
+      let component = this.components[i];
+      results = component.filter(results);
+
+      if (results === null || results.length === 0) {
+        return [];
+      }
+    }
+
+    return results;
+  }
+}
+
+export { JSONHeroPath, JSONHeroQuery };

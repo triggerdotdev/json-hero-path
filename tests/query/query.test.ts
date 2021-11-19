@@ -1,8 +1,29 @@
-test('Simple parse test', () => {
-  let pathString = 'results.0.key';
-  // let hero = JSONHeroPath.fromString(pathString);
+import { JSONHeroQuery } from '../../src';
 
-  expect(true).toBe(true);
+describe('Wildcard path query tests', () => {
+  test('Simple number test', () => {
+    let queryConfig = [
+      {
+        path: 'resultsList',
+      },
+      {
+        path: '*',
+        filters: [
+          {
+            type: 'childKey',
+            key: 'age',
+            operatorType: '>=',
+            value: 36,
+          },
+        ],
+      },
+    ];
+
+    let query = JSONHeroQuery.fromObject(queryConfig);
+    let results = query.all(testObject1);
+
+    expect(results).toEqual([testObject1.resultsList[0], testObject1.resultsList[1], testObject1.resultsList[2]]);
+  });
 });
 
 let testObject1 = {
