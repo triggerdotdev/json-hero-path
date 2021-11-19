@@ -1,5 +1,4 @@
 import { PathComponent } from '../path/path-component';
-import * as path from 'path';
 
 class QueryComponent {
   readonly path: PathComponent;

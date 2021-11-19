@@ -107,6 +107,39 @@ describe('Wildcard path query tests', () => {
 
     expect(results).toEqual(['James']);
   });
+
+  test('Multiple filters query', () => {
+    let queryConfig = [
+      {
+        path: 'resultsList',
+      },
+      {
+        path: '*',
+        filters: [
+          {
+            type: 'subPath',
+            path: 'favouriteThings.*',
+            operatorType: '==',
+            value: 'Rocket League',
+          },
+          {
+            type: 'subPath',
+            path: 'favouriteThings.*',
+            operatorType: '==',
+            value: 'Monzo',
+          },
+        ],
+      },
+      {
+        path: 'name',
+      },
+    ];
+
+    let query = JSONHeroQuery.fromObject(queryConfig);
+    let results = query.all(testObject1);
+
+    expect(results).toEqual(['Matt']);
+  });
 });
 
 let testObject1 = {
