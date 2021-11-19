@@ -1,7 +1,7 @@
 import { JSONHeroQuery } from '../../src';
 
 describe('Wildcard path query tests', () => {
-  test('Simple number test', () => {
+  test('Simple older than query', () => {
     let queryConfig = [
       {
         path: 'resultsList',
@@ -10,7 +10,7 @@ describe('Wildcard path query tests', () => {
         path: '*',
         filters: [
           {
-            type: 'childKey',
+            type: 'operator',
             key: 'age',
             operatorType: '>=',
             value: 36,
@@ -23,6 +23,35 @@ describe('Wildcard path query tests', () => {
     let results = query.all(testObject1);
 
     expect(results).toEqual([testObject1.resultsList[0], testObject1.resultsList[1], testObject1.resultsList[2]]);
+  });
+
+  test('Simple favourite things query', () => {
+    let queryConfig = [
+      {
+        path: 'resultsList',
+      },
+      {
+        path: '*',
+      },
+      {
+        path: 'favouriteThings',
+      },
+      {
+        path: '*',
+        filters: [
+          {
+            type: 'operator',
+            operatorType: 'startsWith',
+            value: 'Far Cry',
+          },
+        ],
+      },
+    ];
+
+    let query = JSONHeroQuery.fromObject(queryConfig);
+    let results = query.all(testObject1);
+
+    expect(results).toEqual(testObject1.resultsList[1].favouriteThings);
   });
 });
 

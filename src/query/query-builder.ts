@@ -21,8 +21,12 @@ class QueryBuilder {
         filters = filterData.map((data) => {
           let filterType = data['type'];
           switch (filterType) {
-            case 'childKey':
-              return new ChildKeyFilter(data['key'] as string, data['operatorType'] as string, data['value'] as any);
+            case 'operator':
+              return new ChildKeyFilter(
+                data['key'] as string | null,
+                data['operatorType'] as string,
+                data['value'] as any,
+              );
             default:
               throw new TypeError(`Unknown filter type: ${filterType}`);
           }

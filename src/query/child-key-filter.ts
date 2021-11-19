@@ -3,15 +3,15 @@ import { QueryOperator, QueryOperatorFactory } from './query-operators';
 
 class ChildKeyFilter implements QueryFilter {
   readonly type: string = 'childKey';
-  readonly key: string;
+  readonly key: string | null;
   readonly operator: QueryOperator;
   readonly value: any;
 
-  constructor(key: string, operatorType: string, value: any) {
+  constructor(key: string | null, operatorType: string, value: any) {
     this.key = key;
     let op = QueryOperatorFactory.FromName(operatorType);
 
-    if (op === null) {
+    if (op == null) {
       throw new RangeError(`Invalid operator type specified: ${operatorType}`);
     }
 
@@ -24,13 +24,18 @@ class ChildKeyFilter implements QueryFilter {
 
     for (let i = 0; i < objects.length; i++) {
       let object = objects[i];
-      let relevantChildObject = object[this.key];
 
-      if (relevantChildObject == null) {
+      //if there's a key filter the child object or just filter the object itself
+      let objectToFilter = object;
+      if (this.key != null) {
+        objectToFilter = object[this.key];
+      }
+
+      if (objectToFilter == null) {
         continue;
       }
 
-      if (this.operator.passes(relevantChildObject, this.value)) {
+      if (this.operator.passes(objectToFilter, this.value)) {
         results.push(object);
       }
     }

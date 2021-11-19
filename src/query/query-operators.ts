@@ -17,6 +17,10 @@ class QueryOperatorFactory {
         return new LessThanOperator();
       case '<=':
         return new LessThanOrEqualOperator();
+      case 'startsWith':
+        return new StartsWithOperator();
+      case 'endsWith':
+        return new EndsWithOperator();
       default:
         return null;
     }
