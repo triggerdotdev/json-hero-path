@@ -1,6 +1,6 @@
 interface PathComponent {
   toString(): string;
-  query(object: any): any;
+  query(objects: any[]): any[];
 }
 
 class SimpleKeyPathComponent implements PathComponent {
@@ -36,12 +36,23 @@ class SimpleKeyPathComponent implements PathComponent {
     { search: new RegExp(/(\\\\)/g), replacement: '\\' },
   ];
 
-  query(object: any): any {
-    if (typeof object !== 'object') {
-      return null;
+  query(objects: any[]): any[] {
+    let results: any[] = [];
+    for (let i = 0; i < objects.length; i++) {
+      let object = objects[i];
+      if (typeof object !== 'object') {
+        continue;
+      }
+
+      let result = object[this.keyName];
+      if (result === null) {
+        continue;
+      }
+
+      results.push(result);
     }
 
-    return object[this.keyName];
+    return results;
   }
 }
 

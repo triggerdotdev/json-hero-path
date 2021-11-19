@@ -1,37 +1,49 @@
-import { PathComponent } from './path-components';
-import PathBuilder from './path-builder';
+import { PathComponent } from './path/path-components';
+import PathBuilder from './path/path-builder';
 
-class JSONHero {
+class JSONHeroPath {
   readonly components: PathComponent[];
 
   constructor(components: PathComponent[]) {
     this.components = components;
   }
 
-  static fromString(string: string): JSONHero {
+  static fromString(string: string): JSONHeroPath {
     let pathBuilder = new PathBuilder();
     let components = pathBuilder.parse(string);
-    return new JSONHero(components);
+    return new JSONHeroPath(components);
   }
 
   toString(): string {
     return this.components.map((component) => component.toString()).join('.');
   }
 
-  query(object: any): any {
-    let queryObject = object;
+  first(object: any): any {
+    let results = this.all(object);
+    if (results === null || results.length === 0) {
+      return null;
+    }
+
+    return results[0];
+  }
+
+  all(object: any): any[] {
+    let results: any[] = [];
+    results.push(object);
 
     for (let i = 0; i < this.components.length; i++) {
       let component = this.components[i];
-      queryObject = component.query(queryObject);
+      results = component.query(results);
 
-      if (queryObject === null) {
-        return null;
+      if (results === null || results.length === 0) {
+        return [];
       }
     }
 
-    return queryObject;
+    return results;
   }
 }
 
-export default JSONHero;
+class JSONHeroQuery {}
+
+export { JSONHeroPath };

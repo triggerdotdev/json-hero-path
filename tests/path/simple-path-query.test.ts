@@ -1,22 +1,30 @@
-import JSONHero from '../src';
-import { SimpleKeyPathComponent } from '../src/path-components';
+import { JSONHeroPath } from '../../src';
+import { SimpleKeyPathComponent } from '../../src/path/path-components';
 
-test('Simple path query', () => {
-  let jamesNameQuery = new JSONHero([
+test('First path query', () => {
+  let jamesNameQuery = new JSONHeroPath([
     new SimpleKeyPathComponent('resultsList'),
     new SimpleKeyPathComponent('1'),
     new SimpleKeyPathComponent('name'),
   ]);
 
-  expect(jamesNameQuery.query(testObject1)).toBe('James');
+  expect(jamesNameQuery.first(testObject1)).toBe('James');
+});
 
-  let invalidArrayIndexQuery = new JSONHero([
+test('Missing element path query', () => {
+  let invalidArrayIndexQuery = new JSONHeroPath([
     new SimpleKeyPathComponent('resultsList'),
     new SimpleKeyPathComponent('6'),
     new SimpleKeyPathComponent('name'),
   ]);
 
-  expect(invalidArrayIndexQuery.query(testObject1)).toBe(null);
+  expect(invalidArrayIndexQuery.first(testObject1)).toBe(null);
+});
+
+test('Object result', () => {
+  let jamesNameQuery = new JSONHeroPath([new SimpleKeyPathComponent('resultsList')]);
+  let queryResult = jamesNameQuery.first(testObject1);
+  expect(queryResult).toBe(testObject1.resultsList);
 });
 
 let testObject1 = {
