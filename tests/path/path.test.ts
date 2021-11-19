@@ -44,6 +44,47 @@ describe('Simple path query tests', () => {
   });
 });
 
+describe('Wildcard path query tests', () => {
+  test('Array all elements', () => {
+    let path = JSONHeroPath.fromString('resultsList.*');
+    let results = path.all(testObject1);
+    expect(results).toEqual(testObject1.resultsList);
+  });
+
+  test('Array first element', () => {
+    let path = JSONHeroPath.fromString('resultsList.*');
+    let results = path.first(testObject1);
+    expect(results).toEqual(testObject1.resultsList[0]);
+  });
+
+  test('All array names', () => {
+    let path = JSONHeroPath.fromString('resultsList.*.name');
+    let results = path.all(testObject1);
+    expect(results).toEqual(['Matt', 'James', 'Eric', 'Dan']);
+  });
+
+  test('All ages', () => {
+    let path = JSONHeroPath.fromString('people.*.age');
+    let results = path.all(testObject2);
+    expect(results).toEqual([
+      testObject2.people.Matt.age,
+      testObject2.people.James.age,
+      testObject2.people.Eric.age,
+      testObject2.people.Dan.age,
+    ]);
+  });
+
+  test('All favourite things', () => {
+    let path = JSONHeroPath.fromString('people.*.favouriteThings.*');
+    let results = path.all(testObject2).flat();
+    let expected = testObject2.people.Matt.favouriteThings
+      .concat(testObject2.people.James.favouriteThings)
+      .concat(testObject2.people.Eric.favouriteThings)
+      .concat(testObject2.people.Dan.favouriteThings);
+
+    expect(results).toEqual(expected);
+  });
+});
 
 let testObject1 = {
   resultsList: [
@@ -69,4 +110,25 @@ let testObject1 = {
     },
   ],
   count: 4,
+};
+
+let testObject2 = {
+  people: {
+    Matt: {
+      age: 36,
+      favouriteThings: ['Monzo', 'The Wirecutter', 'Jurassic Park'],
+    },
+    James: {
+      age: 93,
+      favouriteThings: ['Far Cry 1', 'Far Cry 2', 'Far Cry 3', 'Far Cry 4', 'Far Cry 5', 'Far Cry 6'],
+    },
+    Eric: {
+      age: 38,
+      favouriteThings: ['Bitcoin'],
+    },
+    Dan: {
+      age: 34,
+      favouriteThings: ['Friday admin', 'Doing laundry', 'Frasier'],
+    },
+  },
 };
