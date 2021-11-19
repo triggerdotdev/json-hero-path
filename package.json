@@ -2,20 +2,26 @@
   "name": "json-hero",
   "version": "1.0.0",
   "description": "An easy way to query and filter JSON objects",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "test": "jest --config jestconfig.json",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json"
+    "lint": "tslint -p tsconfig.json",
+    "prepare" : "npm run build",
+    "prepublishOnly" : "npm test && npm run lint",
+    "preversion" : "npm run lint",
+    "version" : "npm run format && git add -A src",
+    "postversion" : "git push && git push --tags"
   },
   "repository": {
     "type": "git",
     "url": "git+https://matt-aitken@github.com/TinyMatter/json-hero.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["JSON", "Filtering", "Path", "Query"],
+  "author": "matt-aitken",
+  "license": "GNU General Public License v3.0",
   "bugs": {
     "url": "https://github.com/TinyMatter/json-hero/issues"
   },
