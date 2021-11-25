@@ -1,5 +1,5 @@
-import { QueryFilter } from './query-component';
-import QueryBuilder from './query-builder';
+import { QueryFilter } from '../query-component';
+import QueryBuilder from '../query-builder';
 
 class OrFilter implements QueryFilter {
   readonly type: string = 'or';

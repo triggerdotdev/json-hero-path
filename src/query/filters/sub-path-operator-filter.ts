@@ -1,6 +1,6 @@
-import { QueryFilter } from './query-component';
-import { JSONHeroPath } from '../index';
-import { QueryOperator, QueryOperatorFactory } from './query-operators';
+import { QueryFilter } from '../query-component';
+import { JSONHeroPath } from '../../index';
+import { QueryOperator, QueryOperatorFactory } from '../query-operators';
 
 class SubPathOperatorFilter implements QueryFilter {
   readonly type: string = 'subPath';

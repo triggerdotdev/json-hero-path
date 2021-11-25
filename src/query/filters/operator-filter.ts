@@ -1,5 +1,5 @@
-import { QueryFilter } from './query-component';
-import { QueryOperator, QueryOperatorFactory } from './query-operators';
+import { QueryFilter } from '../query-component';
+import { QueryOperator, QueryOperatorFactory } from '../query-operators';
 
 class OperatorFilter implements QueryFilter {
   readonly type: string = 'operator';

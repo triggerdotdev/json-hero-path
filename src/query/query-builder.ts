@@ -1,9 +1,9 @@
 import { QueryComponent, QueryFilter } from './query-component';
-import OperatorFilter from './operator-filter';
+import OperatorFilter from './filters/operator-filter';
 import PathBuilder from '../path/path-builder';
-import SubPathOperatorFilter from './sub-path-operator-filter';
+import SubPathOperatorFilter from './filters/sub-path-operator-filter';
 import { JSONHeroPath } from '../index';
-import OrFilter from './or-filter';
+import OrFilter from './filters/or-filter';
 
 class QueryBuilder {
   parse(object: any): QueryComponent[] {
