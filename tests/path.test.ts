@@ -152,17 +152,17 @@ describe('Wildcard path query tests', () => {
 describe('Root/parent/child tests', () => {
   test('Get root', () => {
     let path = new JSONHeroPath('resultsList.*.name');
-    expect(path.root().toString()).toEqual('$');
+    expect(path.root.toString()).toEqual('$');
   });
 
   test('Get parent', () => {
     let path = new JSONHeroPath('resultsList.*');
-    expect(path.parent()?.toString()).toEqual('$.resultsList');
+    expect(path.parent?.toString()).toEqual('$.resultsList');
   });
 
   test('Null parent', () => {
     let path = new JSONHeroPath('$');
-    expect(path.parent()).toEqual(null);
+    expect(path.parent).toEqual(null);
   });
 
   test('Child path', () => {

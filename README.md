@@ -103,10 +103,10 @@ let firstResult = results[0]
 ```js
 let path = new JSONHeroPath('$.people.*.favouriteThings');
 
-let parent = path.parent()
+let parent = path.parent
 // will be a new path: '$.people.*'
 
-let root = path.root()
+let root = path.root
 // will be a new path: '$'
 
 let child = path.child('2')

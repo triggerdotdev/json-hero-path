@@ -16,11 +16,11 @@ class JSONHeroPath {
     this.components = components;
   }
 
-  root(): JSONHeroPath {
+  get root(): JSONHeroPath {
     return new JSONHeroPath(this.components.slice(0, 1));
   }
 
-  parent(): JSONHeroPath | null {
+  get parent(): JSONHeroPath | null {
     if (this.components.length == 1) {
       return null;
     }
@@ -52,7 +52,7 @@ class JSONHeroPath {
     if (this.components.length == 1 && this.components[0] instanceof StartPathComponent) return object;
 
     let results: QueryResult[] = [];
-    let firstResult = new QueryResult(0, this.root(), object);
+    let firstResult = new QueryResult(0, this.root, object);
     results.push(firstResult);
 
     //use the path to traverse the object
