@@ -1,11 +1,12 @@
-import { JSONHeroPath } from '../../src';
-import { SimpleKeyPathComponent } from '../../src/path/simple-key-path-component';
+import { SimpleKeyPathComponent } from '../src/path/simple-key-path-component';
+import JSONHeroPath from '../src';
 
 describe('Parsing tests', () => {
-  test('Blank path should throw', () => {
-    expect(() => {
-      JSONHeroPath.fromString('');
-    }).toThrow();
+  test('Blank path should create a root path', () => {
+    let pathString = '';
+    let hero = JSONHeroPath.fromString(pathString);
+
+    expect(hero.toString()).toEqual('$');
   });
 
   test('Simple parse test', () => {
