@@ -5,6 +5,17 @@ A TypeScript/JavaScript library that provides a simple way of accessing objects 
 `npm install @jsonhero/path`
 
 ## Getting started
+
+You can require
+```
+const { JSONHeroPath } = require('@jsonhero/path');
+```
+
+Or if you're using TypeScript:
+```
+import { JSONHeroPath } from '@jsonhero/path';
+```
+
 Given the following JSON variable called `employees`
 ```
 let employees = {
