@@ -3,6 +3,7 @@ import PathBuilder from './path/path-builder';
 import { QueryComponent } from './query/query-component';
 import QueryBuilder from './query/query-builder';
 import QueryResult from './path/query-result';
+import { WildcardPathComponent } from './path/wildcard-path-component';
 
 class JSONHeroPath {
   readonly components: PathComponent[];
@@ -31,6 +32,10 @@ class JSONHeroPath {
   }
 
   all(object: any): any[] {
+    //if the path is just a wildcard then return the original object
+    if (this.components.length == 0) return object;
+    if (this.components.length == 1 && this.components[0] instanceof WildcardPathComponent) return object;
+
     let results: QueryResult[] = [];
     let firstResult = new QueryResult(0, object);
     results.push(firstResult);
