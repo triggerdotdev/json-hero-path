@@ -22,7 +22,9 @@
   "keywords": ["JSON", "Filtering", "Path"],
   "author": "Matt Aitken",
   "license": "GNU General Public License v3.0",
-  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/TinyMatter/json-hero/issues"
   },
