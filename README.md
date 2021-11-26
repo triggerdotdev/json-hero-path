@@ -5,19 +5,20 @@ A TypeScript/JavaScript library that provides a simple way of accessing objects 
 `npm install @jsonhero/path`
 
 ## Getting started
-
+### Importing
 You can require
-```
+```js
 const { JSONHeroPath } = require('@jsonhero/path');
 ```
 
 Or if you're using TypeScript:
-```
+```js
 import { JSONHeroPath } from '@jsonhero/path';
 ```
 
+### Sample object
 Given the following JSON variable called `employees`
-```
+```js
 let employees = {
     people: [
         {
@@ -47,8 +48,8 @@ let employees = {
 
 ### Simple queries
 A simple query to get the 2nd person's name. Note that you can just include index numbers to access array items (0 = first item)
-```
-let path = JSONHeroPath.fromString('$.people.1.name');
+```js
+let path = new JSONHeroPath('$.people.1.name');
 let name = path.first(employees)
 //name = 'James'
 
@@ -57,8 +58,8 @@ let names = path.all(employees)
 ```
 
 Let's get all the people
-```
-let path = JSONHeroPath.fromString('$.people');
+```js
+let path = new JSONHeroPath('$.people');
 let allPeople = path.all(employees)
 //allPeople is set to the array of people
 ```
@@ -71,14 +72,43 @@ A `$` is placed at the start of a path. If you don't add this, it will just do i
 
 ### Wildcard queries
 Let's get all the names
-```
-let path = JSONHeroPath.fromString('$.people.*.name');
+```js
+let path = new JSONHeroPath('$.people.*.name');
 let allNames = path.all(employees)
 //allNames = ['Matt', 'James', 'Eric', 'Dan']
 ```
 Now everyone's favourite things 
-```
-let path = JSONHeroPath.fromString('$.people.*.favouriteThings.*');
+```js
+let path = new JSONHeroPath('$.people.*.favouriteThings.*');
 let allFavouriteThings = path.all(employees)
 //allFavouriteThings = ['Monzo', 'The Wirecutter', 'Jurassic Park', 'Far Cry 1', 'Far Cry 2', 'Far Cry 3', 'Bitcoin', 'Frasier']
+```
+
+### Getting parent, root and children paths from a path
+```js
+let path = new JSONHeroPath('$.people.*.favouriteThings');
+
+let parent = path.parent()
+// will be a new path: '$.people.*'
+
+let root = path.root()
+// will be a new path: '$'
+
+let child = path.child('2')
+//will be a new path: '$.people.*.favouriteThings.2'
+```
+
+### Getting the result value as well as the paths
+```js
+let path = new JSONHeroPath('$.people.*.favouriteThings.*');
+
+// pass this optional object with `includePath` set to true
+let results = path.all(testObject1, { includePath: true });
+
+let firstResult = results[0]
+//this variable will be an object like this
+//{
+//  value: 'Monzo',
+//   path: a JSONHeroPath for this element 
+//}
 ```
