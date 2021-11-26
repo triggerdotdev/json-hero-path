@@ -25,6 +25,33 @@ describe('Wildcard path query tests', () => {
     expect(results).toEqual([testObject1.resultsList[0], testObject1.resultsList[1], testObject1.resultsList[2]]);
   });
 
+  test('Favourite things of younger people', () => {
+    let queryConfig = [
+      {
+        path: 'resultsList',
+      },
+      {
+        path: '*',
+        filters: [
+          {
+            type: 'operator',
+            key: 'age',
+            operatorType: '<=',
+            value: 36,
+          },
+        ],
+      },
+      {
+        path: 'name',
+      },
+    ];
+
+    let query = JSONHeroQuery.fromObject(queryConfig);
+    let results = query.all(testObject1);
+
+    expect(results).toEqual(['Matt', 'Dan']);
+  });
+
   test('Simple favourite things query', () => {
     let queryConfig = [
       {
@@ -183,6 +210,98 @@ describe('Wildcard path query tests', () => {
     let results = query.all(testObject1);
 
     expect(results).toEqual(['Matt', 'Eric', 'Dan']);
+  });
+
+  test('First n filter query', () => {
+    let queryConfig = [
+      {
+        path: 'resultsList',
+      },
+      {
+        path: '*',
+        filters: [
+          {
+            type: 'firstN',
+            itemCount: 3,
+          },
+        ],
+      },
+      {
+        path: 'name',
+      },
+    ];
+
+    let query = JSONHeroQuery.fromObject(queryConfig);
+    let results = query.all(testObject1);
+
+    expect(results).toEqual(['Matt', 'James', 'Eric']);
+  });
+
+  test('First n filter start offset query', () => {
+    let queryConfig = [
+      {
+        path: 'resultsList',
+      },
+      {
+        path: '*',
+        filters: [
+          {
+            type: 'firstN',
+            startIndex: 2,
+            itemCount: 6,
+          },
+        ],
+      },
+      {
+        path: 'name',
+      },
+    ];
+
+    let query = JSONHeroQuery.fromObject(queryConfig);
+    let results = query.all(testObject1);
+
+    expect(results).toEqual(['Eric', 'Dan']);
+  });
+
+  test('First n from multiple sub items', () => {
+    let queryConfig = [
+      {
+        path: 'resultsList',
+      },
+      {
+        path: '*',
+      },
+      {
+        path: 'favouriteThings',
+      },
+      {
+        path: '*',
+        filters: [
+          {
+            type: 'firstN',
+            startIndex: 0,
+            itemCount: 3,
+          },
+        ],
+      },
+    ];
+
+    let query = JSONHeroQuery.fromObject(queryConfig);
+    let results = query.all(testObject1);
+
+    expect(results).toEqual([
+      'Monzo',
+      'The Wirecutter',
+      'Jurassic Park',
+      'Far Cry 1',
+      'Far Cry 2',
+      'Far Cry 3',
+      'Bitcoin',
+      'Rocket League',
+      'Friday admin',
+      'Doing laundry',
+      'Frasier',
+    ]);
   });
 });
 

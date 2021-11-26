@@ -1,5 +1,6 @@
 import { QueryFilter } from '../query-component';
 import QueryBuilder from '../query-builder';
+import QueryResult from '../../path/query-result';
 
 class OrFilter implements QueryFilter {
   readonly type: string = 'or';
@@ -16,13 +17,13 @@ class OrFilter implements QueryFilter {
     this.subFilters = filters;
   }
 
-  filter(objects: any[]): any[] {
-    let results: any[] = [];
+  filter(previousResults: QueryResult[]): QueryResult[] {
+    let results: QueryResult[] = [];
 
     for (let i = 0; i < this.subFilters.length; i++) {
       let subFilter = this.subFilters[i];
-      let result = subFilter.filter(objects);
-      results.push(result);
+      let result = subFilter.filter(previousResults);
+      results = results.concat(result);
     }
 
     //deduplicate

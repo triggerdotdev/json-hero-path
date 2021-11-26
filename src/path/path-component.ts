@@ -1,6 +1,8 @@
+import QueryResult from './query-result';
+
 interface PathComponent {
   toString(): string;
-  query(objects: any[]): any[];
+  query(objects: QueryResult[]): QueryResult[];
 }
 
 export { PathComponent };

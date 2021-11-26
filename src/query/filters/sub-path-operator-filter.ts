@@ -1,6 +1,7 @@
 import { QueryFilter } from '../query-component';
 import { JSONHeroPath } from '../../index';
 import { QueryOperator, QueryOperatorFactory } from '../query-operators';
+import QueryResult from '../../path/query-result';
 
 class SubPathOperatorFilter implements QueryFilter {
   readonly type: string = 'subPath';
@@ -20,22 +21,22 @@ class SubPathOperatorFilter implements QueryFilter {
     this.value = value;
   }
 
-  filter(objects: any[]): any[] {
-    let results: any[] = [];
+  filter(previousResults: QueryResult[]): QueryResult[] {
+    let newResults: QueryResult[] = [];
 
-    objects.forEach((object) => {
-      let objectsToOperateOn = this.path.all(object);
+    previousResults.forEach((previousResult) => {
+      let objectsToOperateOn = this.path.all(previousResult.object);
 
       for (let i = 0; i < objectsToOperateOn.length; i++) {
         let subject = objectsToOperateOn[i];
         if (this.operator.passes(subject, this.value)) {
-          results.push(object);
+          newResults.push(previousResult);
           break;
         }
       }
     });
 
-    return results;
+    return newResults;
   }
 }
 

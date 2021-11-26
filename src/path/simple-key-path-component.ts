@@ -1,4 +1,5 @@
 import { PathComponent } from './path-component';
+import QueryResult from './query-result';
 
 class SimpleKeyPathComponent implements PathComponent {
   readonly keyName: string;
@@ -33,23 +34,25 @@ class SimpleKeyPathComponent implements PathComponent {
     { search: new RegExp(/(\\\\)/g), replacement: '\\' },
   ];
 
-  query(objects: any[]): any[] {
-    let results: any[] = [];
-    for (let i = 0; i < objects.length; i++) {
-      let object = objects[i];
+  query(results: QueryResult[]): QueryResult[] {
+    let newResults: QueryResult[] = [];
+    for (let i = 0; i < results.length; i++) {
+      let result = results[i];
+      let object = result.object;
       if (typeof object !== 'object') {
         continue;
       }
 
-      let result = object[this.keyName];
-      if (result === null) {
+      let newObject = object[this.keyName];
+      if (newObject === null) {
         continue;
       }
 
-      results.push(result);
+      let newResult = new QueryResult(result.depth, newObject);
+      newResults.push(newResult);
     }
 
-    return results;
+    return newResults;
   }
 }
 

@@ -2,6 +2,7 @@ import { PathComponent } from './path/path-component';
 import PathBuilder from './path/path-builder';
 import { QueryComponent } from './query/query-component';
 import QueryBuilder from './query/query-builder';
+import QueryResult from './path/query-result';
 
 class JSONHeroPath {
   readonly components: PathComponent[];
@@ -30,9 +31,11 @@ class JSONHeroPath {
   }
 
   all(object: any): any[] {
-    let results: any[] = [];
-    results.push(object);
+    let results: QueryResult[] = [];
+    let firstResult = new QueryResult(0, object);
+    results.push(firstResult);
 
+    //use the path to traverse the object
     for (let i = 0; i < this.components.length; i++) {
       let component = this.components[i];
       results = component.query(results);
@@ -42,7 +45,8 @@ class JSONHeroPath {
       }
     }
 
-    return results;
+    //flatten the result
+    return results.map((result) => result.flatten());
   }
 }
 
@@ -69,19 +73,20 @@ class JSONHeroQuery {
   }
 
   all(object: any): any[] {
-    let results: any[] = [];
-    results.push(object);
+    let results: QueryResult[] = [];
+    let firstResult = new QueryResult(0, object);
+    results.push(firstResult);
 
     for (let i = 0; i < this.components.length; i++) {
       let component = this.components[i];
       results = component.filter(results);
 
-      if (results === null || results.length === 0) {
+      if (results == null || results.length === 0) {
         return [];
       }
     }
 
-    return results;
+    return results.map((result) => result.flatten());
   }
 }
 

@@ -4,6 +4,7 @@ import PathBuilder from '../path/path-builder';
 import SubPathOperatorFilter from './filters/sub-path-operator-filter';
 import { JSONHeroPath } from '../index';
 import OrFilter from './filters/or-filter';
+import FirstNFilter from './filters/first-n-filter';
 
 class QueryBuilder {
   parse(object: any): QueryComponent[] {
@@ -47,6 +48,8 @@ class QueryBuilder {
             );
           case 'or':
             return new OrFilter(subData['subFilters']);
+          case 'firstN':
+            return new FirstNFilter(subData['startIndex'], subData['itemCount']);
           default:
             throw new TypeError(`Unknown filter type: ${filterType}`);
         }

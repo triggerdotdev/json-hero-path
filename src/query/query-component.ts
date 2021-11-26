@@ -1,4 +1,5 @@
 import { PathComponent } from '../path/path-component';
+import QueryResult from '../path/query-result';
 
 class QueryComponent {
   readonly path: PathComponent;
@@ -9,8 +10,8 @@ class QueryComponent {
     this.filters = filters;
   }
 
-  filter(objects: any[]): any[] {
-    let results: any[] = this.path.query(objects);
+  filter(previousResults: QueryResult[]): QueryResult[] {
+    let results: any[] = this.path.query(previousResults);
 
     if (results === null || results.length === 0) {
       return [];
@@ -28,7 +29,7 @@ class QueryComponent {
 
 interface QueryFilter {
   readonly type: string;
-  filter(objects: any[]): any[];
+  filter(previousResults: QueryResult[]): QueryResult[];
 }
 
 export { QueryComponent, QueryFilter };

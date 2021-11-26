@@ -1,5 +1,6 @@
 import { QueryFilter } from '../query-component';
 import { QueryOperator, QueryOperatorFactory } from '../query-operators';
+import QueryResult from '../../path/query-result';
 
 class OperatorFilter implements QueryFilter {
   readonly type: string = 'operator';
@@ -19,13 +20,14 @@ class OperatorFilter implements QueryFilter {
     this.value = value;
   }
 
-  filter(objects: any[]): any[] {
-    let results: any[] = [];
+  filter(previousResults: QueryResult[]): QueryResult[] {
+    let newResults: QueryResult[] = [];
 
-    for (let i = 0; i < objects.length; i++) {
-      let object = objects[i];
+    for (let i = 0; i < previousResults.length; i++) {
+      let previousResult = previousResults[i];
+      let object = previousResult.object;
 
-      //if there's a key filter the child object or just filter the object itself
+      //if there's a key then filter the child object, otherwise just filter the object itself
       let objectToFilter = object;
       if (this.key != null) {
         objectToFilter = object[this.key];
@@ -36,11 +38,11 @@ class OperatorFilter implements QueryFilter {
       }
 
       if (this.operator.passes(objectToFilter, this.value)) {
-        results.push(object);
+        newResults.push(new QueryResult(previousResult.depth, object));
       }
     }
 
-    return results;
+    return newResults;
   }
 }
 
