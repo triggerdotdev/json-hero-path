@@ -84,6 +84,21 @@ let allFavouriteThings = path.all(employees)
 //allFavouriteThings = ['Monzo', 'The Wirecutter', 'Jurassic Park', 'Far Cry 1', 'Far Cry 2', 'Far Cry 3', 'Bitcoin', 'Frasier']
 ```
 
+### Getting the result value as well as the paths
+```js
+let path = new JSONHeroPath('$.people.*.favouriteThings.*');
+
+// pass this optional object with `includePath` set to true
+let results = path.all(testObject1, { includePath: true });
+
+let firstResult = results[0]
+//this variable will be an object like this
+//{
+//  value: 'Monzo',
+//   path: a JSONHeroPath for this element 
+//}
+```
+
 ### Getting parent, root and children paths from a path
 ```js
 let path = new JSONHeroPath('$.people.*.favouriteThings');
@@ -98,17 +113,23 @@ let child = path.child('2')
 //will be a new path: '$.people.*.favouriteThings.2'
 ```
 
-### Getting the result value as well as the paths
+### Accessing components from a path
+A path is an array of path components. You can access them directly if you'd like.
+
+You can check if a component is an array type, which is true for wildcards and indexes (e.g. 0)
+
 ```js
-let path = new JSONHeroPath('$.people.*.favouriteThings.*');
+let path = new JSONHeroPath('$.people.2.favouriteThings.*');
 
-// pass this optional object with `includePath` set to true
-let results = path.all(testObject1, { includePath: true });
+let rootComponent = path.components[0]
+let rootComponentIsArray = rootComponent.isArray
+//is false
 
-let firstResult = results[0]
-//this variable will be an object like this
-//{
-//  value: 'Monzo',
-//   path: a JSONHeroPath for this element 
-//}
+let personIndexComponent = path.components[2]
+let personIndexComponentIsArray = personIndexComponent.isArray
+//is true
+
+let wildcardComponent = path.components[4]
+let wildcardComponentIsArray = wildcardComponent.isArray
+//is true
 ```
