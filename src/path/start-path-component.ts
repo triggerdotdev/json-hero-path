@@ -2,6 +2,9 @@ import { PathComponent } from './path-component';
 import QueryResult from './query-result';
 
 class StartPathComponent implements PathComponent {
+  readonly keyName = '$';
+  readonly isArray: boolean = false;
+
   static fromString(string: string): StartPathComponent | null {
     if (string === '$') {
       return new StartPathComponent();
@@ -11,7 +14,7 @@ class StartPathComponent implements PathComponent {
   }
 
   toString(): string {
-    return '$';
+    return this.keyName;
   }
 
   query(objects: QueryResult[]): QueryResult[] {

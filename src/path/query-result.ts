@@ -1,17 +1,23 @@
+import { JSONHeroPath } from '../index';
+
 class QueryResult {
   readonly depth: number = 0;
+  readonly path: JSONHeroPath;
   readonly object: any;
 
-  constructor(depth: number, object: any) {
+  constructor(depth: number, path: JSONHeroPath, object: any) {
     this.depth = depth;
+    this.path = path;
     this.object = object;
   }
 
-  flatten(): any {
-    if (typeof this.object !== 'object') return this.object;
-    if (!Array.isArray(this.object)) return this.object;
-    if (this.depth == 0) return this.object;
-    return this.object.flat(this.depth);
+  flatten(): QueryResult {
+    let flattenedObject = this.object;
+    if (typeof this.object === 'object' && Array.isArray(this.object) && this.depth > 0) {
+      flattenedObject = this.object.flat(this.depth);
+    }
+
+    return new QueryResult(0, this.path, flattenedObject);
   }
 }
 

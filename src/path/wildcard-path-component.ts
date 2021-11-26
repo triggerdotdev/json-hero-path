@@ -2,6 +2,9 @@ import { PathComponent } from './path-component';
 import QueryResult from './query-result';
 
 class WildcardPathComponent implements PathComponent {
+  readonly keyName = '*';
+  readonly isArray: boolean = true;
+
   static fromString(string: string): WildcardPathComponent | null {
     if (string === '*') {
       return new WildcardPathComponent();
@@ -11,7 +14,7 @@ class WildcardPathComponent implements PathComponent {
   }
 
   toString(): string {
-    return '*';
+    return this.keyName;
   }
 
   query(results: QueryResult[]): QueryResult[] {
@@ -26,7 +29,7 @@ class WildcardPathComponent implements PathComponent {
 
       for (const key in object) {
         let newObject = object[key];
-        let newResult = new QueryResult(result.depth + 1, newObject);
+        let newResult = new QueryResult(result.depth + 1, result.path.child(key), newObject);
         newResults.push(newResult);
       }
     }
@@ -34,4 +37,5 @@ class WildcardPathComponent implements PathComponent {
     return newResults;
   }
 }
+
 export { WildcardPathComponent };

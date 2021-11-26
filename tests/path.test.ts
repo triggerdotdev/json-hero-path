@@ -171,6 +171,30 @@ describe('Root/parent/child tests', () => {
   });
 });
 
+describe('Component isArray', () => {
+  test('Detects numbers and wildcards', () => {
+    let path = new JSONHeroPath('$.resultsList.2.favouriteThings.*');
+    expect(path.components[0].isArray).toEqual(false);
+    expect(path.components[1].isArray).toEqual(false);
+    expect(path.components[2].isArray).toEqual(true);
+    expect(path.components[3].isArray).toEqual(false);
+    expect(path.components[4].isArray).toEqual(true);
+  });
+
+  test('Detects numbers and wildcards', () => {
+    let path = new JSONHeroPath('$.resultsList.-2.favouriteThings.*');
+    expect(path.components[2].isArray).toEqual(false);
+  });
+});
+
+describe('Results path information', () => {
+  test('All with path information', () => {
+    let path = new JSONHeroPath('$.resultsList.*.favouriteThings.*');
+    let results = path.all(testObject1, { includePath: true });
+    expect(results[0].path.toString()).toEqual('$.resultsList.0.favouriteThings.0');
+  });
+});
+
 let testObject1 = {
   resultsList: [
     {

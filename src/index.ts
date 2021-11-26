@@ -37,8 +37,8 @@ class JSONHeroPath {
     return this.components.map((component) => component.toString()).join('.');
   }
 
-  first(object: any): any {
-    let results = this.all(object);
+  first(object: any, options: PathOptions = { includePath: false }): any {
+    let results = this.all(object, options);
     if (results === null || results.length === 0) {
       return null;
     }
@@ -46,13 +46,13 @@ class JSONHeroPath {
     return results[0];
   }
 
-  all(object: any): any[] {
+  all(object: any, options: PathOptions = { includePath: false }): any[] {
     //if the path is just a wildcard then return the original object
     if (this.components.length == 0) return object;
     if (this.components.length == 1 && this.components[0] instanceof StartPathComponent) return object;
 
     let results: QueryResult[] = [];
-    let firstResult = new QueryResult(0, object);
+    let firstResult = new QueryResult(0, this.root(), object);
     results.push(firstResult);
 
     //use the path to traverse the object
@@ -66,8 +66,32 @@ class JSONHeroPath {
     }
 
     //flatten the result
-    return results.map((result) => result.flatten());
+    let flattenedResults = results.map((result) => result.flatten());
+
+    if (!options.includePath) {
+      return flattenedResults.map((result) => result.object);
+    }
+
+    let all: any[] = [];
+    for (let i = 0; i < flattenedResults.length; i++) {
+      let flattenedResult = flattenedResults[i];
+      let object: any = {
+        value: flattenedResult.object,
+      };
+
+      if (options.includePath) {
+        object.path = flattenedResult.path;
+      }
+
+      all.push(object);
+    }
+
+    return all;
   }
+}
+
+interface PathOptions {
+  includePath: boolean;
 }
 
 export { JSONHeroPath };

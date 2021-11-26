@@ -3,9 +3,26 @@ import QueryResult from './query-result';
 
 class SimpleKeyPathComponent implements PathComponent {
   readonly keyName: string;
+  readonly isArray: boolean = false;
 
   constructor(keyName: string) {
     this.keyName = keyName;
+
+    let keyAsInteger = parseInt(this.keyName, 10);
+    if (keyAsInteger === NaN) {
+      return;
+    }
+
+    let isInteger = Number.isInteger(keyAsInteger);
+    if (!isInteger) {
+      return;
+    }
+
+    if (keyAsInteger < 0) {
+      return;
+    }
+
+    this.isArray = true;
   }
 
   static fromString(string: string): SimpleKeyPathComponent {
@@ -48,7 +65,7 @@ class SimpleKeyPathComponent implements PathComponent {
         continue;
       }
 
-      let newResult = new QueryResult(result.depth, newObject);
+      let newResult = new QueryResult(result.depth, result.path.child(this.keyName), newObject);
       newResults.push(newResult);
     }
 
