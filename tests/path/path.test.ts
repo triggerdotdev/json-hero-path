@@ -24,6 +24,14 @@ describe('Parsing tests', () => {
     expect(hero.toString()).toBe(pathString);
     expect(hero.components.length).toBe(3);
   });
+
+  test('Asterisk test', () => {
+    let pathString = 'results*.*.key';
+    let hero = JSONHeroPath.fromString(pathString);
+
+    expect(hero.toString()).toBe(pathString);
+    expect(hero.components.length).toBe(3);
+  });
 });
 
 describe('Simple path query tests', () => {
