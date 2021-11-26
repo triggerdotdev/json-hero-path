@@ -4,21 +4,21 @@ import { JSONHeroPath } from '../src';
 describe('Parsing tests', () => {
   test('Blank path should create a root path', () => {
     let pathString = '';
-    let hero = JSONHeroPath.fromString(pathString);
+    let hero = new JSONHeroPath(pathString);
 
     expect(hero.toString()).toEqual('$');
   });
 
   test('Simple parse test', () => {
     let pathString = '$.results.0.key';
-    let hero = JSONHeroPath.fromString(pathString);
+    let hero = new JSONHeroPath(pathString);
 
     expect(hero.toString()).toEqual(pathString);
   });
 
   test('Delimiter parse test', () => {
     let pathString = '$.resu\\.lts\\..0.key';
-    let hero = JSONHeroPath.fromString(pathString);
+    let hero = new JSONHeroPath(pathString);
 
     expect(hero.toString()).toBe(pathString);
     expect(hero.components.length).toEqual(4);
@@ -26,7 +26,7 @@ describe('Parsing tests', () => {
 
   test('Single backslash test', () => {
     let pathString = '$.resu\\lts.0.key\\a';
-    let hero = JSONHeroPath.fromString(pathString);
+    let hero = new JSONHeroPath(pathString);
 
     expect(hero.toString()).toBe(pathString);
     expect(hero.components.length).toBe(4);
@@ -34,7 +34,7 @@ describe('Parsing tests', () => {
 
   test('Asterisk test', () => {
     let pathString = '$.results*.*.key';
-    let hero = JSONHeroPath.fromString(pathString);
+    let hero = new JSONHeroPath(pathString);
 
     expect(hero.toString()).toBe(pathString);
     expect(hero.components.length).toBe(4);
@@ -42,7 +42,7 @@ describe('Parsing tests', () => {
 
   test('Dollar test', () => {
     let pathString = '$.$re$ults$.*.key';
-    let hero = JSONHeroPath.fromString(pathString);
+    let hero = new JSONHeroPath(pathString);
 
     expect(hero.toString()).toBe(pathString);
     expect(hero.components.length).toBe(4);
@@ -50,7 +50,7 @@ describe('Parsing tests', () => {
 
   test('Adds $ if not included', () => {
     let pathString = 'results.*.key';
-    let hero = JSONHeroPath.fromString(pathString);
+    let hero = new JSONHeroPath(pathString);
 
     expect(hero.toString()).toEqual(`$.${pathString}`);
     expect(hero.components.length).toBe(4);
@@ -68,22 +68,22 @@ describe('Simple path query tests', () => {
   });
 
   test('First path query', () => {
-    let jamesNameQuery = JSONHeroPath.fromString('resultsList.1.name');
+    let jamesNameQuery = new JSONHeroPath('resultsList.1.name');
     expect(jamesNameQuery.first(testObject1)).toEqual('James');
   });
 
   test('Simple all query with one result', () => {
-    let jamesNameQuery = JSONHeroPath.fromString('resultsList.1.name');
+    let jamesNameQuery = new JSONHeroPath('resultsList.1.name');
     expect(jamesNameQuery.all(testObject1)).toEqual(['James']);
   });
 
   test('Missing element path query', () => {
-    let invalidArrayIndexQuery = JSONHeroPath.fromString('resultsList.6.name');
+    let invalidArrayIndexQuery = new JSONHeroPath('resultsList.6.name');
     expect(invalidArrayIndexQuery.first(testObject1)).toBe(null);
   });
 
   test('Object result', () => {
-    let objectQuery = JSONHeroPath.fromString('resultsList');
+    let objectQuery = new JSONHeroPath('resultsList');
     let queryResult = objectQuery.first(testObject1);
     expect(queryResult).toBe(testObject1.resultsList);
   });
@@ -91,25 +91,25 @@ describe('Simple path query tests', () => {
 
 describe('Wildcard path query tests', () => {
   test('Array all elements', () => {
-    let path = JSONHeroPath.fromString('resultsList.*');
+    let path = new JSONHeroPath('resultsList.*');
     let results = path.all(testObject1);
     expect(results).toEqual(testObject1.resultsList);
   });
 
   test('Array first element', () => {
-    let path = JSONHeroPath.fromString('resultsList.*');
+    let path = new JSONHeroPath('resultsList.*');
     let results = path.first(testObject1);
     expect(results).toEqual(testObject1.resultsList[0]);
   });
 
   test('All array names', () => {
-    let path = JSONHeroPath.fromString('resultsList.*.name');
+    let path = new JSONHeroPath('resultsList.*.name');
     let results = path.all(testObject1);
     expect(results).toEqual(['Matt', 'James', 'Eric', 'Dan']);
   });
 
   test('All ages', () => {
-    let path = JSONHeroPath.fromString('people.*.age');
+    let path = new JSONHeroPath('people.*.age');
     let results = path.all(testObject2);
     expect(results).toEqual([
       testObject2.people.Matt.age,
@@ -120,7 +120,7 @@ describe('Wildcard path query tests', () => {
   });
 
   test('All favourite things', () => {
-    let path = JSONHeroPath.fromString('people.*.favouriteThings.*');
+    let path = new JSONHeroPath('people.*.favouriteThings.*');
     let results = path.all(testObject2).flat();
     let expected = testObject2.people.Matt.favouriteThings
       .concat(testObject2.people.James.favouriteThings)
@@ -131,19 +131,19 @@ describe('Wildcard path query tests', () => {
   });
 
   test('Original object', () => {
-    let objectQuery = JSONHeroPath.fromString('$');
+    let objectQuery = new JSONHeroPath('$');
     let queryResult = objectQuery.all(testObject1);
     expect(queryResult).toEqual(testObject1);
   });
 
   test('Original array', () => {
-    let objectQuery = JSONHeroPath.fromString('$');
+    let objectQuery = new JSONHeroPath('$');
     let queryResult = objectQuery.all(testArray1);
     expect(queryResult).toEqual(testArray1);
   });
 
   test('Original object with blank path', () => {
-    let objectQuery = JSONHeroPath.fromString('');
+    let objectQuery = new JSONHeroPath('');
     let queryResult = objectQuery.all(testObject1);
     expect(queryResult).toEqual(testObject1);
   });

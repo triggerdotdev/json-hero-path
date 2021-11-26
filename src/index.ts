@@ -6,14 +6,14 @@ import StartPathComponent from './path/start-path-component';
 class JSONHeroPath {
   readonly components: PathComponent[];
 
-  constructor(components: PathComponent[]) {
-    this.components = components;
-  }
+  constructor(components: PathComponent[] | string) {
+    if (typeof components == 'string') {
+      let pathBuilder = new PathBuilder();
+      this.components = pathBuilder.parse(components);
+      return;
+    }
 
-  static fromString(string: string): JSONHeroPath {
-    let pathBuilder = new PathBuilder();
-    let components = pathBuilder.parse(string);
-    return new JSONHeroPath(components);
+    this.components = components;
   }
 
   toString(): string {
