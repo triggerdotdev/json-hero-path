@@ -149,6 +149,28 @@ describe('Wildcard path query tests', () => {
   });
 });
 
+describe('Root/parent/child tests', () => {
+  test('Get root', () => {
+    let path = new JSONHeroPath('resultsList.*.name');
+    expect(path.root().toString()).toEqual('$');
+  });
+
+  test('Get parent', () => {
+    let path = new JSONHeroPath('resultsList.*');
+    expect(path.parent()?.toString()).toEqual('$.resultsList');
+  });
+
+  test('Null parent', () => {
+    let path = new JSONHeroPath('$');
+    expect(path.parent()).toEqual(null);
+  });
+
+  test('Child path', () => {
+    let path = new JSONHeroPath('$.resultsList');
+    expect(path.child('1').toString()).toEqual('$.resultsList.1');
+  });
+});
+
 let testObject1 = {
   resultsList: [
     {

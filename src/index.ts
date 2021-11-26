@@ -16,6 +16,23 @@ class JSONHeroPath {
     this.components = components;
   }
 
+  root(): JSONHeroPath {
+    return new JSONHeroPath(this.components.slice(0, 1));
+  }
+
+  parent(): JSONHeroPath | null {
+    if (this.components.length == 1) {
+      return null;
+    }
+
+    return new JSONHeroPath(this.components.slice(0, -1));
+  }
+
+  child(key: string) {
+    let string = this.toString();
+    return new JSONHeroPath(string.concat(`.${key}`));
+  }
+
   toString(): string {
     return this.components.map((component) => component.toString()).join('.');
   }
