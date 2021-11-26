@@ -1,5 +1,5 @@
 {
-  "name": "json-hero",
+  "name": "@jsonhero/path",
   "version": "1.0.0",
   "description": "An easy way to query and filter JSON objects",
   "main": "lib/index.js",
