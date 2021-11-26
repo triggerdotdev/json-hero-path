@@ -69,12 +69,12 @@ describe('Simple path query tests', () => {
 
   test('First path query', () => {
     let jamesNameQuery = JSONHeroPath.fromString('resultsList.1.name');
-    expect(jamesNameQuery.first(testObject1)).toBe('James');
+    expect(jamesNameQuery.first(testObject1)).toEqual('James');
   });
 
-  test('First path query', () => {
+  test('Simple all query with one result', () => {
     let jamesNameQuery = JSONHeroPath.fromString('resultsList.1.name');
-    expect(jamesNameQuery.all(testObject1)).toBe(['James']);
+    expect(jamesNameQuery.all(testObject1)).toEqual(['James']);
   });
 
   test('Missing element path query', () => {
