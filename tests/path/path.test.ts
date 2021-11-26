@@ -2,39 +2,70 @@ import { JSONHeroPath } from '../../src';
 import { SimpleKeyPathComponent } from '../../src/path/simple-key-path-component';
 
 describe('Parsing tests', () => {
+  test('Blank path should throw', () => {
+    expect(() => {
+      JSONHeroPath.fromString('');
+    }).toThrow();
+  });
+
   test('Simple parse test', () => {
-    let pathString = 'results.0.key';
+    let pathString = '$.results.0.key';
     let hero = JSONHeroPath.fromString(pathString);
 
-    expect(hero.toString()).toBe(pathString);
+    expect(hero.toString()).toEqual(pathString);
   });
 
   test('Delimiter parse test', () => {
-    let pathString = 'resu\\.lts\\..0.key';
+    let pathString = '$.resu\\.lts\\..0.key';
     let hero = JSONHeroPath.fromString(pathString);
 
     expect(hero.toString()).toBe(pathString);
-    expect(hero.components.length).toBe(3);
+    expect(hero.components.length).toEqual(4);
   });
 
   test('Single backslash test', () => {
-    let pathString = 'resu\\lts.0.key\\a';
+    let pathString = '$.resu\\lts.0.key\\a';
     let hero = JSONHeroPath.fromString(pathString);
 
     expect(hero.toString()).toBe(pathString);
-    expect(hero.components.length).toBe(3);
+    expect(hero.components.length).toBe(4);
   });
 
   test('Asterisk test', () => {
-    let pathString = 'results*.*.key';
+    let pathString = '$.results*.*.key';
     let hero = JSONHeroPath.fromString(pathString);
 
     expect(hero.toString()).toBe(pathString);
-    expect(hero.components.length).toBe(3);
+    expect(hero.components.length).toBe(4);
+  });
+
+  test('Dollar test', () => {
+    let pathString = '$.$re$ults$.*.key';
+    let hero = JSONHeroPath.fromString(pathString);
+
+    expect(hero.toString()).toBe(pathString);
+    expect(hero.components.length).toBe(4);
+  });
+
+  test('Adds $ if not included', () => {
+    let pathString = 'results.*.key';
+    let hero = JSONHeroPath.fromString(pathString);
+
+    expect(hero.toString()).toEqual(`$.${pathString}`);
+    expect(hero.components.length).toBe(4);
   });
 });
 
 describe('Simple path query tests', () => {
+  test('First path query with objects', () => {
+    let firstComponent = new SimpleKeyPathComponent('resultsList');
+    let secondComponent = new SimpleKeyPathComponent('1');
+    let thirdComponent = new SimpleKeyPathComponent('name');
+
+    let jamesNameQuery = new JSONHeroPath([firstComponent, secondComponent, thirdComponent]);
+    expect(jamesNameQuery.first(testObject1)).toBe('James');
+  });
+
   test('First path query', () => {
     let jamesNameQuery = JSONHeroPath.fromString('resultsList.1.name');
     expect(jamesNameQuery.first(testObject1)).toBe('James');
@@ -92,6 +123,24 @@ describe('Wildcard path query tests', () => {
 
     expect(results).toEqual(expected);
   });
+
+  test('Original object', () => {
+    let objectQuery = JSONHeroPath.fromString('$');
+    let queryResult = objectQuery.all(testObject1);
+    expect(queryResult).toEqual(testObject1);
+  });
+
+  test('Original array', () => {
+    let objectQuery = JSONHeroPath.fromString('$');
+    let queryResult = objectQuery.all(testArray1);
+    expect(queryResult).toEqual(testArray1);
+  });
+
+  test('Original object with blank path', () => {
+    let objectQuery = JSONHeroPath.fromString('');
+    let queryResult = objectQuery.all(testObject1);
+    expect(queryResult).toEqual(testObject1);
+  });
 });
 
 let testObject1 = {
@@ -140,3 +189,26 @@ let testObject2 = {
     },
   },
 };
+
+let testArray1 = [
+  {
+    name: 'Matt',
+    age: 36,
+    favouriteThings: ['Monzo', 'The Wirecutter', 'Jurassic Park'],
+  },
+  {
+    name: 'James',
+    age: 93,
+    favouriteThings: ['Far Cry 1', 'Far Cry 2', 'Far Cry 3', 'Far Cry 4', 'Far Cry 5', 'Far Cry 6'],
+  },
+  {
+    name: 'Eric',
+    age: 38,
+    favouriteThings: ['Bitcoin'],
+  },
+  {
+    name: 'Dan',
+    age: 34,
+    favouriteThings: ['Friday admin', 'Doing laundry', 'Frasier'],
+  },
+];
