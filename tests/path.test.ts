@@ -1,5 +1,5 @@
 import { SimpleKeyPathComponent } from '../src/path/simple-key-path-component';
-import JSONHeroPath from '../src';
+import { JSONHeroPath } from '../src';
 
 describe('Parsing tests', () => {
   test('Blank path should create a root path', () => {

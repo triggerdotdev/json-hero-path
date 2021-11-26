@@ -53,4 +53,4 @@ class JSONHeroPath {
   }
 }
 
-export default JSONHeroPath;
+export { JSONHeroPath };
