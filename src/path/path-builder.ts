@@ -24,6 +24,10 @@ class PathBuilder {
       return wildcardComponent;
     }
 
+    if (string == '') {
+      return new WildcardPathComponent();
+    }
+
     return SimpleKeyPathComponent.fromString(string);
   }
 }
