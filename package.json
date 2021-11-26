@@ -1,6 +1,6 @@
 {
   "name": "@jsonhero/path",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An easy way to query and filter JSON objects",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://matt-aitken@github.com/TinyMatter/json-hero.git"
+    "url": "git+https://github.com/matt-aitken/json-hero-path.git"
   },
   "keywords": ["JSON", "Filtering", "Path"],
   "author": "Matt Aitken",
@@ -26,9 +26,9 @@
     "access": "public"
   },
   "bugs": {
-    "url": "https://github.com/TinyMatter/json-hero/issues"
+    "url": "https://github.com/matt-aitken/json-hero-path/issues"
   },
-  "homepage": "https://github.com/TinyMatter/json-hero#readme",
+  "homepage": "https://github.com/matt-aitken/json-hero-path",
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "jest": "^27.3.1",
