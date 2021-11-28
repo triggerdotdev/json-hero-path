@@ -93,6 +93,35 @@ describe('Wildcard path query tests', () => {
   });
 });
 
+describe('Slice path query tests', () => {
+  test('Slice start', () => {
+    let path = new JSONHeroPath('resultsList.[1:]');
+    let results = path.all(testObject1);
+    expect(results).toEqual([testObject1.resultsList[1], testObject1.resultsList[2], testObject1.resultsList[3]]);
+  });
+
+  test('Slice start end', () => {
+    let path = new JSONHeroPath('resultsList.[1:3]');
+    let results = path.all(testObject1);
+    expect(results).toEqual([testObject1.resultsList[1], testObject1.resultsList[2]]);
+  });
+
+  test('Slice negative end', () => {
+    let path = new JSONHeroPath('resultsList.[:-2]');
+    let results = path.all(testObject1);
+    expect(results).toEqual([testObject1.resultsList[0], testObject1.resultsList[1]]);
+  });
+
+  test('Slice then child query', () => {
+    let path = new JSONHeroPath('resultsList.[:-2].favouriteThings.[0:1]');
+    let results = path.all(testObject1);
+    expect(results).toEqual([
+      testObject1.resultsList[0].favouriteThings[0],
+      testObject1.resultsList[1].favouriteThings[0],
+    ]);
+  });
+});
+
 describe('Root/parent/child tests', () => {
   test('Get root', () => {
     let path = new JSONHeroPath('resultsList.*.name');

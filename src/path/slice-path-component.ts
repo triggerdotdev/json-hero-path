@@ -2,14 +2,14 @@ import { PathComponent } from './path-component';
 import QueryResult from './query-result';
 
 class SlicePathComponent implements PathComponent {
-  readonly startIndex: Number | null = null;
-  readonly endIndex: Number | null = null;
+  readonly startIndex: number;
+  readonly endIndex: number | null = null;
   readonly isArray: boolean = true;
 
   //pattern that matches [startIndex?:endIndex?]
-  private static regex = /^\[(?<startIndex>[0-9]*):?(?<endIndex>\-?[0-9]*)?\]$/g;
+  private static regex = /^\[(?<startIndex>[0-9]*):(?<endIndex>\-?[0-9]*)?\]$/g;
 
-  constructor(startIndex: Number | null, endIndex: Number | null) {
+  constructor(startIndex: number, endIndex: number | null) {
     this.startIndex = startIndex;
     this.endIndex = endIndex;
   }
@@ -49,8 +49,30 @@ class SlicePathComponent implements PathComponent {
     return `[${this.startIndex}${this.endIndex == null ? '' : ':' + this.endIndex}]`;
   }
 
-  query(objects: QueryResult[]): QueryResult[] {
-    return [];
+  query(results: QueryResult[]): QueryResult[] {
+    let newResults: QueryResult[] = [];
+
+    for (let i = 0; i < results.length; i++) {
+      let result = results[i];
+      let object = result.object;
+
+      if (typeof object !== 'object') continue;
+      if (!Array.isArray(object)) continue;
+
+      let slicedItems: any[];
+      if (this.endIndex == null) {
+        slicedItems = object.slice(this.startIndex);
+      } else {
+        slicedItems = object.slice(this.startIndex, this.endIndex);
+      }
+
+      for (let j = 0; j < slicedItems.length; j++) {
+        let slicedItem = slicedItems[j];
+        newResults.push(new QueryResult(result.depth + 1, result.path.child(`${j + this.startIndex}`), slicedItem));
+      }
+    }
+
+    return newResults;
   }
 }
 

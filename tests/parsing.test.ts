@@ -67,7 +67,7 @@ describe('Parsing tests', () => {
   });
 
   test('Slice component with start only', () => {
-    let hero = new JSONHeroPath('$.element1.[3]');
+    let hero = new JSONHeroPath('$.element1.[3:]');
     let pathComponent = hero.components[2];
     expect(pathComponent instanceof SlicePathComponent).toEqual(true);
 
