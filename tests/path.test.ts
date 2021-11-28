@@ -1,62 +1,6 @@
 import { SimpleKeyPathComponent } from '../src/path/simple-key-path-component';
 import { JSONHeroPath } from '../src';
 
-describe('Parsing tests', () => {
-  test('Blank path should create a root path', () => {
-    let pathString = '';
-    let hero = new JSONHeroPath(pathString);
-
-    expect(hero.toString()).toEqual('$');
-  });
-
-  test('Simple parse test', () => {
-    let pathString = '$.results.0.key';
-    let hero = new JSONHeroPath(pathString);
-
-    expect(hero.toString()).toEqual(pathString);
-  });
-
-  test('Delimiter parse test', () => {
-    let pathString = '$.resu\\.lts\\..0.key';
-    let hero = new JSONHeroPath(pathString);
-
-    expect(hero.toString()).toBe(pathString);
-    expect(hero.components.length).toEqual(4);
-  });
-
-  test('Single backslash test', () => {
-    let pathString = '$.resu\\lts.0.key\\a';
-    let hero = new JSONHeroPath(pathString);
-
-    expect(hero.toString()).toBe(pathString);
-    expect(hero.components.length).toBe(4);
-  });
-
-  test('Asterisk test', () => {
-    let pathString = '$.results*.*.key';
-    let hero = new JSONHeroPath(pathString);
-
-    expect(hero.toString()).toBe(pathString);
-    expect(hero.components.length).toBe(4);
-  });
-
-  test('Dollar test', () => {
-    let pathString = '$.$re$ults$.*.key';
-    let hero = new JSONHeroPath(pathString);
-
-    expect(hero.toString()).toBe(pathString);
-    expect(hero.components.length).toBe(4);
-  });
-
-  test('Adds $ if not included', () => {
-    let pathString = 'results.*.key';
-    let hero = new JSONHeroPath(pathString);
-
-    expect(hero.toString()).toEqual(`$.${pathString}`);
-    expect(hero.components.length).toBe(4);
-  });
-});
-
 describe('Simple path query tests', () => {
   test('First path query with objects', () => {
     let firstComponent = new SimpleKeyPathComponent('resultsList');

@@ -2,6 +2,7 @@ import { PathComponent } from './path-component';
 import { SimpleKeyPathComponent } from './simple-key-path-component';
 import { WildcardPathComponent } from './wildcard-path-component';
 import StartPathComponent from './start-path-component';
+import { SlicePathComponent } from './slice-path-component';
 
 class PathBuilder {
   private static readonly delimiter: RegExp = /(?<!\\)\./g;
@@ -42,6 +43,11 @@ class PathBuilder {
 
     if (string == '') {
       throw new SyntaxError('Cannot create a path from an empty string');
+    }
+
+    let sliceComponent = SlicePathComponent.fromString(string);
+    if (sliceComponent != null) {
+      return sliceComponent;
     }
 
     return SimpleKeyPathComponent.fromString(string);
