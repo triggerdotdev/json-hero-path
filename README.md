@@ -84,6 +84,30 @@ let allFavouriteThings = path.all(employees)
 //allFavouriteThings = ['Monzo', 'The Wirecutter', 'Jurassic Park', 'Far Cry 1', 'Far Cry 2', 'Far Cry 3', 'Bitcoin', 'Frasier']
 ```
 
+### Array slice queries
+We can slice arrays (in the exact same way as the JavaScript .slice() function).
+
+Offset the start index
+```js
+let path = new JSONHeroPath('$.people.[1:]');
+let skipFirstPerson = path.all(employees);
+// skipFirstPerson will have everyone but the first person in
+```
+
+Restrict the end index
+```js
+let path = new JSONHeroPath('$.people.[1:2]');
+let justTheSecondPerson = path.all(employees);
+// justTheSecondPerson will have only the second person in (start index is 1 and the end won't include index 2)
+```
+
+Negative end indexes remove items from the end of an array
+```js
+let path = new JSONHeroPath('$.people.[:-1]');
+let excludeLastPerson = path.all(employees);
+// excludeLastPerson will have everyone except the last person
+```
+
 ### Getting the result value as well as the paths
 ```js
 let path = new JSONHeroPath('$.people.*.favouriteThings.*');
