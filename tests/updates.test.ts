@@ -89,6 +89,25 @@ describe('Merge tests', () => {
     expect(path.child('4').first(objectCopy)).toStrictEqual(lionel);
   });
 
+  test('Merging array into an array', () => {
+    let path = new JSONHeroPath('resultsList.1.favouriteThings');
+    let objectCopy = _.cloneDeep(testObject1);
+    let newValues = ['Black', 'Taxidermy'];
+    path.merge(objectCopy, newValues);
+
+    expect(path.first(objectCopy).length).toBe(8);
+    expect(path.first(objectCopy)).toStrictEqual([
+      'Far Cry 1',
+      'Far Cry 2',
+      'Far Cry 3',
+      'Far Cry 4',
+      'Far Cry 5',
+      'Far Cry 6',
+      'Black',
+      'Taxidermy',
+    ]);
+  });
+
   test('Merging simple value into an array', () => {
     let path = new JSONHeroPath('resultsList.1.favouriteThings');
     let objectCopy = _.cloneDeep(testObject1);

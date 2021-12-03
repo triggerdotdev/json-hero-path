@@ -117,7 +117,7 @@ class JSONHeroPath {
       let existingValue = parentObject[path.lastComponent.toString()];
 
       if (Array.isArray(existingValue)) {
-        existingValue.push(mergeValue);
+        parentObject[path.lastComponent.toString()] = existingValue.concat([mergeValue].flat());
       } else {
         if (typeof mergeValue != 'object' || Array.isArray(mergeValue)) return;
 
