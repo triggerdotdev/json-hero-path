@@ -185,25 +185,47 @@ let wildcardComponentIsArray = wildcardComponent.isArray;
 
 You can update values in an object at the specified path.
 
-Overwriting the object at a path
+### Setting new values (overwriting existing values at a path)
+
+Overwriting a single object at a path:
 
 ```js
-let path = new JSONHeroPath('$.people.0');
-path.set(objectCopy, {
+let path = new JSONHeroPath('$.people.1');
+//this will overwrite the entire object at that path
+path.set(employees, {
   name: 'James',
   age: 100,
   favouriteThings: ['Far Cry 1', 'Far Cry 2', 'Far Cry 3', 'Far Cry 4', 'Far Cry 5', 'Far Cry 6'],
 });
+```
 
-let rootComponent = path.components[0];
-let rootComponentIsArray = rootComponent.isArray;
-//is false
+This will overwrite all the objects at the path:
 
-let personIndexComponent = path.components[2];
-let personIndexComponentIsArray = personIndexComponent.isArray;
-//is true
+```js
+let path = new JSONHeroPath('$.people.*.favouriteThings');
+//this will set everyone's favourite things to be an array with just Jurassic Park in it
+path.set(employees, ['Jurassic Park']);
+```
 
-let wildcardComponent = path.components[4];
-let wildcardComponentIsArray = wildcardComponent.isArray;
-//is true
+### Merging values
+
+You can merge values into arrays and objects.
+
+For an array this will append the passed in values to the end of the array
+
+```js
+let path = new JSONHeroPath('$.people.*.favouriteThings');
+//this will add Groundhog Day and Milkshakes to everyone's favourite things
+path.merge(employees, ['Groundhog Day', 'Milkshakes']);
+```
+
+For an object, this will overwrite properties that already exist and add any that don't
+
+```js
+let path = new JSONHeroPath('$.people.*');
+//this will update everyone's age to be 21 and add a new hairColour property with a value of Brown
+path.merge(employees, {
+  age: 21,
+  hairColour: 'Brown',
+});
 ```
