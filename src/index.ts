@@ -28,6 +28,11 @@ class JSONHeroPath {
     return new JSONHeroPath(this.components.slice(0, -1));
   }
 
+  get lastComponent(): PathComponent | undefined {
+    if (this.components.length === 0) return;
+    return this.components[this.components.length - 1];
+  }
+
   child(key: string) {
     let string = this.toString();
     return new JSONHeroPath(string.concat(`.${key}`));
@@ -48,8 +53,8 @@ class JSONHeroPath {
 
   all(object: any, options: PathOptions = { includePath: false }): any[] {
     //if the path is just a wildcard then return the original object
-    if (this.components.length == 0) return object;
-    if (this.components.length == 1 && this.components[0] instanceof StartPathComponent) return object;
+    if (this.components.length == 0) return [object];
+    if (this.components.length == 1 && this.components[0] instanceof StartPathComponent) return [object];
 
     let results: QueryResult[] = [];
     let firstResult = new QueryResult(0, this.root, object);
@@ -87,6 +92,18 @@ class JSONHeroPath {
     }
 
     return all;
+  }
+
+  set(object: any, newValue: any) {
+    let allResults = this.all(object, { includePath: true });
+
+    allResults.forEach(({ path }) => {
+      let parentPath = path.parent;
+      let parentObject = parentPath?.first(object);
+
+      if (!path.lastComponent) return;
+      parentObject[path.lastComponent.toString()] = newValue;
+    });
   }
 }
 
