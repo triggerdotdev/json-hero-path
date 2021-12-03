@@ -20,6 +20,11 @@ class JSONHeroPath {
     return new JSONHeroPath(this.components.slice(0, 1));
   }
 
+  get isRoot(): boolean {
+    if (this.components.length > 1) return false;
+    return this.components[0] instanceof StartPathComponent;
+  }
+
   get parent(): JSONHeroPath | null {
     if (this.components.length == 1) {
       return null;

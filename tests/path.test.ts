@@ -142,6 +142,22 @@ describe('Root/parent/child tests', () => {
     let path = new JSONHeroPath('$.resultsList');
     expect(path.child('1').toString()).toEqual('$.resultsList.1');
   });
+
+  test('Is root', () => {
+    let path = new JSONHeroPath('$');
+    expect(path.isRoot).toStrictEqual(true);
+  });
+
+  test('Is root from parent', () => {
+    let path = new JSONHeroPath('$.resultsList');
+    let parentPath = path.parent;
+    expect(parentPath?.isRoot).toStrictEqual(true);
+  });
+
+  test('Is not root', () => {
+    let path = new JSONHeroPath('$.resultsList');
+    expect(path.isRoot).toStrictEqual(false);
+  });
 });
 
 describe('Component isArray', () => {
