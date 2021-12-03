@@ -77,19 +77,19 @@ describe('Wildcard path query tests', () => {
   test('Original object', () => {
     let objectQuery = new JSONHeroPath('$');
     let queryResult = objectQuery.all(testObject1);
-    expect(queryResult).toEqual(testObject1);
+    expect(queryResult).toEqual([testObject1]);
   });
 
   test('Original array', () => {
     let objectQuery = new JSONHeroPath('$');
     let queryResult = objectQuery.all(testArray1);
-    expect(queryResult).toEqual(testArray1);
+    expect(queryResult).toEqual([testArray1]);
   });
 
   test('Original object with blank path', () => {
     let objectQuery = new JSONHeroPath('');
     let queryResult = objectQuery.all(testObject1);
-    expect(queryResult).toEqual(testObject1);
+    expect(queryResult).toEqual([testObject1]);
   });
 });
 
