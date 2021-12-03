@@ -105,6 +105,28 @@ class JSONHeroPath {
       parentObject[path.lastComponent.toString()] = newValue;
     });
   }
+
+  merge(object: any, mergeValue: any) {
+    let allResults = this.all(object, { includePath: true });
+
+    allResults.forEach(({ path }) => {
+      let parentPath = path.parent;
+      let parentObject = parentPath?.first(object);
+
+      if (!path.lastComponent) return;
+      let existingValue = parentObject[path.lastComponent.toString()];
+
+      if (Array.isArray(existingValue)) {
+        existingValue.push(mergeValue);
+      } else {
+        if (typeof mergeValue != 'object' || Array.isArray(mergeValue)) return;
+
+        for (const key in mergeValue) {
+          existingValue[key] = mergeValue[key];
+        }
+      }
+    });
+  }
 }
 
 interface PathOptions {
