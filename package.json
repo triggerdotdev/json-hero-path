@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matt-aitken/json-hero-path.git"
+    "url": "git+https://github.com/jsonhero-io/json-hero-path"
   },
   "keywords": [
     "JSON",
@@ -25,14 +25,14 @@
     "Path"
   ],
   "author": "Matt Aitken",
-  "license": "GNU General Public License v3.0",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "bugs": {
-    "url": "https://github.com/matt-aitken/json-hero-path/issues"
+    "url": "https://github.com/jsonhero-io/json-hero-path/issues"
   },
-  "homepage": "https://github.com/matt-aitken/json-hero-path",
+  "homepage": "https://github.com/jsonhero-io/json-hero-path",
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "@types/lodash": "^4.14.177",
