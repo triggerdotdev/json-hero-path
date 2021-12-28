@@ -5,14 +5,16 @@ import StartPathComponent from './start-path-component';
 import { SlicePathComponent } from './slice-path-component';
 
 class PathBuilder {
-  private static readonly delimiter: RegExp = /(?<!\\)\./g;
+  //Match a dot but not if preceeded by a backslash
+  private static readonly pathPattern: RegExp = /(?:[^\.\\]|\\.)+/g;
 
   parse(path: string): PathComponent[] {
-    let subPaths = path.split(PathBuilder.delimiter);
+    PathBuilder.pathPattern.lastIndex = 0;
+    let subPaths = path.match(PathBuilder.pathPattern);
 
     let components: PathComponent[] = [new StartPathComponent()];
 
-    if (subPaths.length == 0 || (subPaths.length == 1 && subPaths[0] == '')) {
+    if (subPaths == null || subPaths.length == 0 || (subPaths.length == 1 && subPaths[0] == '')) {
       return components;
     }
 
