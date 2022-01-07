@@ -138,4 +138,4 @@ interface PathOptions {
   includePath: boolean;
 }
 
-export { JSONHeroPath };
+export { JSONHeroPath, PathComponent };
