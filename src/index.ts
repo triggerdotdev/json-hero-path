@@ -38,9 +38,18 @@ class JSONHeroPath {
     return this.components[this.components.length - 1];
   }
 
-  child(key: string) {
+  child(key: string): JSONHeroPath {
     let string = this.toString();
     return new JSONHeroPath(string.concat(`.${key}`));
+  }
+
+  replaceComponent(index: number, newKey: string) {
+    let pathBuilder = new PathBuilder();
+    let newComponent = pathBuilder.parseComponent(newKey);
+
+    let newComponents = [...this.components];
+    newComponents[index] = newComponent;
+    return new JSONHeroPath(newComponents);
   }
 
   toString(): string {

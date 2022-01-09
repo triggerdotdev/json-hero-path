@@ -158,6 +158,13 @@ describe('Root/parent/child tests', () => {
     let path = new JSONHeroPath('$.resultsList');
     expect(path.isRoot).toStrictEqual(false);
   });
+
+  test('Replace component', () => {
+    let path = new JSONHeroPath('$.resultsList.0.favouriteThings.*');
+    let newPath = path.replaceComponent(2, '2');
+    expect(newPath.toString()).toStrictEqual('$.resultsList.2.favouriteThings.*');
+    expect(path.toString()).toStrictEqual('$.resultsList.0.favouriteThings.*');
+  });
 });
 
 describe('Component isArray', () => {
