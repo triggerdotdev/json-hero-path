@@ -17,6 +17,10 @@ class StartPathComponent implements PathComponent {
     return this.keyName;
   }
 
+  jsonPointer(): string {
+    return '';
+  }
+
   query(objects: QueryResult[]): QueryResult[] {
     //we don't want to actually do anything, this is just a marker for the start
     return objects;

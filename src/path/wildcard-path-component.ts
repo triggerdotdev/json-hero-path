@@ -17,6 +17,10 @@ class WildcardPathComponent implements PathComponent {
     return this.keyName;
   }
 
+  jsonPointer(): string {
+    throw Error("JSON Pointers don't work with wildcards");
+  }
+
   query(results: QueryResult[]): QueryResult[] {
     let newResults: QueryResult[] = [];
 

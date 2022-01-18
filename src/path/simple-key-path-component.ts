@@ -41,6 +41,15 @@ class SimpleKeyPathComponent implements PathComponent {
     return escapedString;
   }
 
+  jsonPointer(): string {
+    let escapedString = this.keyName;
+    //replace ~ with ~0
+    escapedString = escapedString.replace(/(\~)/g, '~0');
+    //replace / with ~1
+    escapedString = escapedString.replace(/(\/)/g, '~1');
+    return escapedString;
+  }
+
   private static escapeExpressions: { search: RegExp; replacement: string }[] = [
     { search: new RegExp(/(\\)/g), replacement: '\\' },
     { search: new RegExp(/(\.)/g), replacement: '\\.' },

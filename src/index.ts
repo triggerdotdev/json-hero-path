@@ -56,6 +56,11 @@ class JSONHeroPath {
     return this.components.map((component) => component.toString()).join('.');
   }
 
+  jsonPointer(): string {
+    if (this.components.length === 1) return '';
+    return this.components.map((component) => component.jsonPointer()).join('/');
+  }
+
   first(object: any, options: PathOptions = { includePath: false }): any {
     let results = this.all(object, options);
     if (results === null || results.length === 0) {

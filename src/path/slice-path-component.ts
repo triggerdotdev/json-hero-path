@@ -49,6 +49,10 @@ class SlicePathComponent implements PathComponent {
     return `[${this.startIndex}${this.endIndex == null ? '' : ':' + this.endIndex}]`;
   }
 
+  jsonPointer(): string {
+    throw Error("JSON Pointers don't work with wildcards");
+  }
+
   query(results: QueryResult[]): QueryResult[] {
     let newResults: QueryResult[] = [];
 
