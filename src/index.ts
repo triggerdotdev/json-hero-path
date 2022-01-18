@@ -2,6 +2,7 @@ import { PathComponent } from './path/path-component';
 import PathBuilder from './path/path-builder';
 import QueryResult from './path/query-result';
 import StartPathComponent from './path/start-path-component';
+import { WildcardPathComponent } from './path/wildcard-path-component';
 
 class JSONHeroPath {
   readonly components: PathComponent[];
@@ -11,6 +12,14 @@ class JSONHeroPath {
       let pathBuilder = new PathBuilder();
       this.components = pathBuilder.parse(components);
       return;
+    }
+
+    if (components.length == 0) {
+      components.push(new StartPathComponent());
+    }
+
+    if (!(components[0] instanceof StartPathComponent)) {
+      components.unshift(new StartPathComponent());
     }
 
     this.components = components;

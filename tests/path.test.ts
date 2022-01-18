@@ -191,6 +191,22 @@ describe('Results path information', () => {
   });
 });
 
+describe('Create from components', () => {
+  test('Correctly created from components', () => {
+    let path = new JSONHeroPath('$.resultsList.0');
+    let pathFromComponents = new JSONHeroPath(path.components);
+    expect(pathFromComponents.toString()).toEqual('$.resultsList.0');
+    expect(pathFromComponents.components.length).toEqual(3);
+  });
+
+  test('Adds the start path component', () => {
+    let path = new JSONHeroPath('$.resultsList.0');
+    let pathFromComponents = new JSONHeroPath(path.components.slice(1));
+    expect(pathFromComponents.toString()).toEqual('$.resultsList.0');
+    expect(pathFromComponents.components.length).toEqual(3);
+  });
+});
+
 let testObject1 = {
   resultsList: [
     {
