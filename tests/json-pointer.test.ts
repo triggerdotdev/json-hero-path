@@ -41,4 +41,20 @@ describe('JSON pointer tests', () => {
     let test6 = new JSONHeroPath(' ');
     expect(test6.jsonPointer()).toBe('/ ');
   });
+
+  test('Creating from pointers', () => {
+    let rootQuery = new JSONHeroPath('$');
+    expect(JSONHeroPath.fromPointer(rootQuery.jsonPointer()).toString()).toEqual(rootQuery.toString());
+
+    let test1 = new JSONHeroPath('$.c%d.name');
+    expect(JSONHeroPath.fromPointer(test1.jsonPointer()).toString()).toEqual(test1.toString());
+
+    let test2 = new JSONHeroPath('$.e^f.name');
+    expect(JSONHeroPath.fromPointer(test2.jsonPointer()).toString()).toEqual(test2.toString());
+
+    let test3 = new JSONHeroPath('$.g|h.name');
+    expect(JSONHeroPath.fromPointer(test3.jsonPointer()).toString()).toEqual(test3.toString());
+
+    expect(JSONHeroPath.fromPointer('/foo/bar/baz').toString()).toEqual('$.foo.bar.baz');
+  });
 });

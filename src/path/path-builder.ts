@@ -6,13 +6,14 @@ import { SlicePathComponent } from './slice-path-component';
 
 class PathBuilder {
   //Match a dot but not if preceeded by a backslash
-  private static readonly pathPattern: RegExp = /(?:[^\.\\]|\\.)+/g;
+  private static readonly pathPattern = /(?:[^\.\\]|\\.)+/g;
+  private static readonly pointerPattern = /(?:[^\/\\]|\\\/)+/g;
 
   parse(path: string): PathComponent[] {
     PathBuilder.pathPattern.lastIndex = 0;
-    let subPaths = path.match(PathBuilder.pathPattern);
+    const subPaths = path.match(PathBuilder.pathPattern);
 
-    let components: PathComponent[] = [new StartPathComponent()];
+    const components: PathComponent[] = [new StartPathComponent()];
 
     if (subPaths == null || subPaths.length == 0 || (subPaths.length == 1 && subPaths[0] == '')) {
       return components;
@@ -25,9 +26,27 @@ class PathBuilder {
     }
 
     for (let i = startIndex; i < subPaths.length; i++) {
-      let subPath = subPaths[i];
-      let pathComponent = this.parseComponent(subPath);
+      const subPath = subPaths[i];
+      const pathComponent = this.parseComponent(subPath);
       components.push(pathComponent);
+    }
+
+    return components;
+  }
+
+  parsePointer(pointer: string): PathComponent[] {
+    PathBuilder.pathPattern.lastIndex = 0;
+
+    const subPaths = pointer.match(PathBuilder.pointerPattern);
+
+    const components: PathComponent[] = [new StartPathComponent()];
+
+    if (subPaths == null || subPaths.length == 0 || (subPaths.length == 1 && subPaths[0] == '')) {
+      return components;
+    }
+
+    for (const subPath of subPaths) {
+      components.push(this.parseComponent(subPath));
     }
 
     return components;
