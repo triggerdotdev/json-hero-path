@@ -9,7 +9,7 @@ class SimpleKeyPathComponent implements PathComponent {
     this.keyName = keyName;
 
     let keyAsInteger = parseInt(this.keyName, 10);
-    if (keyAsInteger === NaN) {
+    if (isNaN(keyAsInteger)) {
       return;
     }
 
