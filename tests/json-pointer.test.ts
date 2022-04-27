@@ -56,5 +56,8 @@ describe('JSON pointer tests', () => {
     expect(JSONHeroPath.fromPointer(test3.jsonPointer()).toString()).toEqual(test3.toString());
 
     expect(JSONHeroPath.fromPointer('/foo/bar/baz').toString()).toEqual('$.foo.bar.baz');
+    expect(JSONHeroPath.fromPointer('/customerMetric~1ALL_TIME_TOP_ORDER_COUNT_V1').toString()).toEqual(
+      '$.customerMetric/ALL_TIME_TOP_ORDER_COUNT_V1',
+    );
   });
 });

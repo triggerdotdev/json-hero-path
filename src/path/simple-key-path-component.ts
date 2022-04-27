@@ -55,9 +55,10 @@ class SimpleKeyPathComponent implements PathComponent {
     { search: new RegExp(/(\.)/g), replacement: '\\.' },
   ];
 
-  private static unescapeExpressions: { search: RegExp; replacement: string }[] = [
+  private static unescapeExpressions: { search: RegExp | string; replacement: string }[] = [
     { search: new RegExp(/(\\\.)/g), replacement: '.' },
     { search: new RegExp(/(\\\\)/g), replacement: '\\' },
+    { search: '~1', replacement: '/' },
   ];
 
   query(results: QueryResult[]): QueryResult[] {
